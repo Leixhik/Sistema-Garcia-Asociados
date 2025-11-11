@@ -3,14 +3,14 @@
 body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    background: #f6f4ef; /* Beige elegante */
+    background: #f6f4ef; 
     color: #333;
 }
 
 /* Barra superior */
 .header {
-    background: #262626; /* Negro suave */
-    color: #C6A667; /* Dorado elegante */
+    background: #262626; 
+    color: #C6A667; 
     padding: 14px 30px;
     font-size: 22px;
     font-family: 'Lora', serif;
@@ -18,7 +18,19 @@ body {
     align-items: center;
     justify-content: space-between;
     letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
+.header-slogan {
+    background: #e9e4dc;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 14px;
+    font-family: 'Lora', serif;
+    color: #6e6a63;
+    border-bottom: 1px solid #d1cabe;
+    letter-spacing: 0.8px;
+}
+
 
 /* Menú lateral */
 .sidebar {
@@ -58,3 +70,12 @@ body {
     margin-bottom: 20px;
     font-weight: 600;
 }
+.btn {
+    padding: 10px 15px;
+    background: #7a5e42;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.btn:hover { background: #604831; }
+

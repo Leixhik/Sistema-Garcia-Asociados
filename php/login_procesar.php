@@ -11,9 +11,13 @@ $result_abogado = $conexion->query($sql_abogado);
 
 if($result_abogado->num_rows > 0){
     $data = $result_abogado->fetch_assoc();
-    $_SESSION['usuario'] = $data['Nom_abgd'];
-    $_SESSION['rol'] = "abogado";
-    header("Location: ../VISTAS/panel_abogado.php");
+$_SESSION['rol'] = "abogado";
+$_SESSION['Ced_abgd'] = $data['Ced_abgd'];
+$_SESSION['Nom_abgd'] = $data['Nom_abgd'];
+$_SESSION['App_abgd'] = $data['App_abgd'];
+$_SESSION['Apm_abgd'] = $data['Apm_abgd'];
+
+    header("Location: ../vistas/panel_abogado.php");
     exit();
 }
 
@@ -23,11 +27,19 @@ $result_cliente = $conexion->query($sql_cliente);
 
 if($result_cliente->num_rows > 0){
     $data = $result_cliente->fetch_assoc();
-    $_SESSION['usuario'] = $data['Nom_cl'];
+
     $_SESSION['rol'] = "cliente";
-    header("Location: ../VISTAS/panel_cliente.php");
+
+    $_SESSION['id_cl']  = $data['Id_cl'];
+    $_SESSION['Nom_cl'] = $data['Nom_cl'];
+    $_SESSION['App_cl'] = $data['App_cl'];
+    $_SESSION['Apm_cl'] = $data['Apm_cl'];
+
+    header("Location: ../vistas/panel_cliente.php");
     exit();
 }
+
+
 
 // Si no coincide
 header("Location: ../VISTAS/login.php?error=1");

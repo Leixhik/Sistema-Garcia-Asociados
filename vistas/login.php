@@ -14,7 +14,8 @@ session_start();
 <div class="login-box">
     <h2>Iniciar Sesión</h2>
 
-    <form action="../PHP/iniciar_sesion.php" method="POST">
+    <form action="../PHP/login_procesar.php" method="POST">
+
         <input type="text" name="correo" placeholder="Correo" required>
         <input type="password" name="password" placeholder="Contraseña" required>
         <button type="submit">Ingresar</button>

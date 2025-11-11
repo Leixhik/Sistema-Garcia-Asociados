@@ -1,9 +1,10 @@
 <?php
 session_start();
 if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "cliente"){
-    header("Location: login.php");
+    header("Location: ../VISTAS/login.php");
     exit();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -38,14 +39,15 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "cliente"){
 
 <div class="header">
     <span>⚖️ García & Asociados</span>
-    <span>Cliente: <?php echo $_SESSION['usuario']; ?></span>
+    <span>Cliente: <?php echo $_SESSION['Nom_cl']." ".$_SESSION['App_cl']; ?></span>
+
 </div>
 
 <!-- Menú para cliente (más simple) -->
 <div class="sidebar">
     <a href="panel_cliente.php">Inicio</a>
     <a href="cita_cliente.php">Mis Citas</a>
-    <a href="../PHP/logout.php">Cerrar Sesión</a>
+    <a href="../php/logout.php">Cerrar Sesión</a>
 </div>
 
 <div class="content">
@@ -56,8 +58,10 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "cliente"){
 
         <?php
         include "../INC/conexion.php";
-        $nombre = $_SESSION['usuario'];
-        $consulta = $conexion->query("SELECT * FROM cliente WHERE Nom_cl='$nombre'");
+        $idCliente = $_SESSION['id_cl'];
+$consulta = $conexion->query("SELECT * FROM cliente WHERE Id_cl=$idCliente");
+
+
         $cliente = $consulta->fetch_assoc();
         ?>
 

@@ -5,6 +5,8 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
     exit();
 }
 ?>
+<label>Confirmar contraseña</label>
+<input type="password" name="con_cl_confirm" required>
 
 <!DOCTYPE html>
 <html lang="es">
