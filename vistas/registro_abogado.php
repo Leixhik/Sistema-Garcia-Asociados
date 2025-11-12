@@ -1,15 +1,24 @@
 <?php
 session_start();
+
+// Verificar que haya sesión y sea abogado
 if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
     header("Location: login.php");
     exit();
 }
+
+// Solo los administradores pueden acceder
+if (!isset($_SESSION['es_admin']) || (int)$_SESSION['es_admin'] !== 1) {
+    echo "<script>alert('⚠️ No tienes permiso para registrar abogados.'); window.location='panel_abogado.php';</script>";
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Registrar Cliente</title>
+<title>Registrar Abogado</title>
 <link rel="stylesheet" href="../CSS/estilo_panel.css">
 <style>
 .form-box{
@@ -56,12 +65,11 @@ button:hover{
 
 <div class="header">
     <span>⚖️ García & Asociados</span>
-    <span>Sesión: <?php echo $_SESSION['usuario']; ?></span>
+    <span>Administrador: <?php echo $_SESSION['Nom_abgd']." ".$_SESSION['App_abgd']; ?></span>
 </div>
 
 <div class="sidebar">
     <a href="panel_abogado.php">Inicio</a>
-    <a href="citas_abogado.php">Mis Citas</a>
     <a href="registro_cliente.php">Registrar Cliente</a>
     <a href="registro_abogado.php">Registrar Abogado</a>
     <a href="../PHP/logout.php">Cerrar Sesión</a>
@@ -69,19 +77,19 @@ button:hover{
 
 <div class="content">
     <div class="form-box">
-        <h2>Registrar Nuevo Cliente</h2>
-        <form action="../PHP/guardar_cliente.php" method="POST">
+        <h2>Registrar Nuevo Abogado</h2>
+
+        <form action="../php/guardar_abogado.php" method="POST">
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="ap_pat" placeholder="Apellido Paterno" required>
             <input type="text" name="ap_mat" placeholder="Apellido Materno" required>
-            <input type="text" name="rfc" placeholder="RFC del cliente" required>
-            <input type="text" name="cp" placeholder="Código Postal" required>
-            <input type="text" name="direccion" placeholder="Dirección completa" required>
-            <input type="text" name="telefono" placeholder="Teléfono o celular" required>
+            <input type="text" name="dir" placeholder="Dirección" required>
+            <input type="text" name="cel" placeholder="Celular" required>
+            <input type="text" name="tel" placeholder="Teléfono fijo" required>
             <input type="email" name="correo" placeholder="Correo electrónico" required>
             <input type="password" name="password" placeholder="Contraseña" required>
             <input type="password" name="confirmar" placeholder="Confirmar contraseña" required>
-            <button type="submit">Guardar Cliente</button>
+            <button type="submit">Guardar Abogado</button>
         </form>
     </div>
 </div>

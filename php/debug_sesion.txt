@@ -1,0 +1,10 @@
+Array
+(
+    [rol] => abogado
+    [Id_abgd] => 2
+    [Nom_abgd] => Zendy
+    [App_abgd] => García
+    [Apm_abgd] => Martinez
+    [usuario] => Zendy
+    [es_admin] => 0
+)

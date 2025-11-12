@@ -4,32 +4,44 @@ require_once __DIR__ . '/../inc/conexion.php';
 
 $correo   = isset($_POST['correo'])   ? trim($_POST['correo'])   : '';
 $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+file_put_contents(__DIR__ . '/debug_log.txt', "Se ejecutó ESTE login_procesar.php\n", FILE_APPEND);
 
 if ($correo === '' || $password === '') {
     header('Location: ../vistas/login.php?error=1'); exit;
 }
 
 /* 1) Intentar como ABOGADO */
-$sql = "SELECT Id_abgd, Nom_abgd, App_abgd, Apm_abgd, Cor_abgd, Con_abgd
+$sql = "SELECT Id_abgd, Nom_abgd, App_abgd, Apm_abgd, Cor_abgd, Con_abgd, es_admin
         FROM abogado
         WHERE Cor_abgd = ? AND Con_abgd = ? LIMIT 1";
-if (!$stmt = $conexion->prepare($sql)) {
+
+$stmt = $conexion->prepare($sql);
+if (!$stmt) {
     die("Error SQL (abogado->prepare): " . $conexion->error);
 }
 $stmt->bind_param('ss', $correo, $password);
 $stmt->execute();
 $res = $stmt->get_result();
+
 if ($row = $res->fetch_assoc()) {
-    $_SESSION['rol']      = 'abogado';
-    $_SESSION['Id_abgd']  = (int)$row['Id_abgd'];
-    $_SESSION['Nom_abgd'] = $row['Nom_abgd'];
-    $_SESSION['App_abgd'] = $row['App_abgd'];
-    $_SESSION['Apm_abgd'] = $row['Apm_abgd'];
-    $_SESSION['usuario']  = $row['Nom_abgd']; // si lo usas en algún header
-    $stmt->close();
-    header('Location: ../vistas/panel_abogado.php'); exit;
+    $_SESSION['rol']       = 'abogado';
+    $_SESSION['Id_abgd']   = (int)$row['Id_abgd'];
+    $_SESSION['Nom_abgd']  = $row['Nom_abgd'];
+    $_SESSION['App_abgd']  = $row['App_abgd'];
+    $_SESSION['Apm_abgd']  = $row['Apm_abgd'];
+    $_SESSION['usuario']   = $row['Nom_abgd'];
+    $_SESSION['es_admin']  = (int)$row['es_admin']; // 👈 FIX REAL
+file_put_contents(__DIR__ . '/debug_sesion.txt', print_r($_SESSION, true));
+
+    // 🔍 Verificación temporal
+    // var_dump($_SESSION); exit();
+
+    header('Location: ../vistas/panel_abogado.php');
+    exit();
 }
 $stmt->close();
+
+
 
 /* 2) Intentar como CLIENTE */
 $sql = "SELECT Id_cl, Nom_cl, App_cl, Apm_cl, Cor_cl, Con_cli
