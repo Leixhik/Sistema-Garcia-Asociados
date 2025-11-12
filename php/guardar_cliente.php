@@ -1,17 +1,37 @@
 <?php
-include "../INC/conexion.php";
+session_start();
+include "../inc/conexion.php";
 
+if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
+    header("Location: ../vistas/login.php");
+    exit();
+}
+
+// Capturar datos del formulario
 $nombre = $_POST['nombre'];
-$ap_pat = $_POST['ap_pat'];
-$ap_mat = $_POST['ap_mat'];
+$app = $_POST['ap_pat'];
+$apm = $_POST['ap_mat'];
+$rfc = $_POST['rfc'];
+$cp = $_POST['cp'];
+$direccion = $_POST['direccion'];
+$telefono = $_POST['telefono'];
 $correo = $_POST['correo'];
-$password = $_POST['password'];
+$pass = $_POST['password'];
+$confirmar = $_POST['confirmar'];
 
-$sql = "INSERT INTO cliente (Nom_cl, App_cl, Apm_cl, cp_cl, rf_cl, tel_cl, Cor_cl, Dir_cli, Con_cli)
-VALUES ('$nombre','$ap_pat','$ap_mat','00000','N/D','0000000000','$correo','Sin registro','$password')";
+// Verificar que las contraseñas coincidan
+if ($pass !== $confirmar) {
+    echo "<script>alert('⚠️ Las contraseñas no coinciden'); window.location='../vistas/registro_cliente.php';</script>";
+    exit();
+}
+
+// Insertar en la base de datos
+$sql = "INSERT INTO cliente (Nom_cl, App_cl, Apm_cl, cp_cl, Rfc_cl, tel_cl, Cor_cl, Dir_cl, Con_cli)
+        VALUES ('$nombre', '$app', '$apm', '$cp', '$rfc', '$telefono', '$correo', '$direccion', '$pass')";
 
 if($conexion->query($sql)){
-    header("Location: ../VISTAS/registro_cliente.php?ok=1");
+    echo "<script>alert('✅ Cliente registrado correctamente'); window.location='../vistas/panel_abogado.php';</script>";
 } else {
-    echo "❌ Error: " . $conexion->error;
+    echo "<script>alert('❌ Error al guardar el cliente: ".$conexion->error."'); window.location='../vistas/registro_cliente.php';</script>";
 }
+?>

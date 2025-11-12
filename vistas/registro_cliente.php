@@ -5,9 +5,6 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
     exit();
 }
 ?>
-<label>Confirmar contraseña</label>
-<input type="password" name="con_cl_confirm" required>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -76,9 +73,13 @@ button:hover{
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="ap_pat" placeholder="Apellido Paterno" required>
             <input type="text" name="ap_mat" placeholder="Apellido Materno" required>
-            <input type="email" name="correo" placeholder="Correo" required>
+            <input type="text" name="rfc" placeholder="RFC del cliente" required>
+            <input type="text" name="cp" placeholder="Código Postal" required>
+            <input type="text" name="direccion" placeholder="Dirección completa" required>
+            <input type="text" name="telefono" placeholder="Teléfono o celular" required>
+            <input type="email" name="correo" placeholder="Correo electrónico" required>
             <input type="password" name="password" placeholder="Contraseña" required>
-
+            <input type="password" name="confirmar" placeholder="Confirmar contraseña" required>
             <button type="submit">Guardar Cliente</button>
         </form>
     </div>

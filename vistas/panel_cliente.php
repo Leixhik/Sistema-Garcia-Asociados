@@ -1,12 +1,10 @@
 <?php
 session_start();
 if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "cliente"){
-    header("Location: ../VISTAS/login.php");
+    header("Location: ../vistas/login.php");
     exit();
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -40,10 +38,9 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "cliente"){
 <div class="header">
     <span>⚖️ García & Asociados</span>
     <span>Cliente: <?php echo $_SESSION['Nom_cl']." ".$_SESSION['App_cl']; ?></span>
-
 </div>
 
-<!-- Menú para cliente (más simple) -->
+<!-- Menú lateral -->
 <div class="sidebar">
     <a href="panel_cliente.php">Inicio</a>
     <a href="cita_cliente.php">Mis Citas</a>
@@ -57,18 +54,18 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "cliente"){
         <h2>Mis Datos</h2>
 
         <?php
-        include "../INC/conexion.php";
+        include "../inc/conexion.php";
         $idCliente = $_SESSION['id_cl'];
-$consulta = $conexion->query("SELECT * FROM cliente WHERE Id_cl=$idCliente");
-
-
+        $consulta = $conexion->query("SELECT * FROM cliente WHERE Id_cl = $idCliente");
         $cliente = $consulta->fetch_assoc();
         ?>
 
         <p><strong>Nombre completo:</strong> <?php echo $cliente['Nom_cl'] . " " . $cliente['App_cl'] . " " . $cliente['Apm_cl']; ?></p>
+        <p><strong>RFC:</strong> <?php echo $cliente['Rfc_cl']; ?></p>
+        <p><strong>Código Postal:</strong> <?php echo $cliente['cp_cl']; ?></p>
         <p><strong>Correo:</strong> <?php echo $cliente['Cor_cl']; ?></p>
         <p><strong>Teléfono:</strong> <?php echo $cliente['tel_cl']; ?></p>
-        <p><strong>Dirección:</strong> <?php echo $cliente['Dir_cli']; ?></p>
+        <p><strong>Dirección:</strong> <?php echo $cliente['Dir_cl']; ?></p>
     </div>
 </div>
 
