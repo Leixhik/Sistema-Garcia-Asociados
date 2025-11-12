@@ -1,19 +1,27 @@
 <?php
 session_start();
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'abogado') {
-    header('Location: ../vistas/login.php'); exit;
+    header('Location: ../vistas/login.php'); 
+    exit;
 }
+
 require_once __DIR__ . '/../inc/conexion.php';
 
+// ✅ Recuperamos el ID real del abogado (ahora guardado correctamente)
 $idAbogado = isset($_SESSION['Id_abgd']) ? (int)$_SESSION['Id_abgd'] : 0;
-if ($idAbogado <= 0) { header('Location: ../vistas/login.php'); exit; }
+if ($idAbogado <= 0) { 
+    die("⚠️ Error: el ID del abogado no está definido en la sesión."); 
+}
 
+// ✅ Consulta segura
 $sql = "SELECT Da_ct, Hra_ct, Nom_cl_ct, App_cl_ct, Apm_cl_ct
         FROM cita
         WHERE abgd_id_ct = ?
         ORDER BY Da_ct, Hra_ct";
 $stmt = $conexion->prepare($sql);
-if (!$stmt) { die("Error SQL (citas->prepare): " . $conexion->error); }
+if (!$stmt) { 
+    die("Error SQL (prepare): " . $conexion->error); 
+}
 
 $stmt->bind_param('i', $idAbogado);
 $stmt->execute();
@@ -37,11 +45,18 @@ th,td{padding:10px;border-bottom:1px solid #e5e0d8;text-align:center;}
   <span>Abogado: <?php echo htmlspecialchars($_SESSION['Nom_abgd'].' '.$_SESSION['App_abgd']); ?></span>
 </div>
 <div class="sidebar">
-  <a href="panel_abogado.php">Inicio</a>
-  <a href="citas_abogado.php">Mis Citas</a>
-  <a href="agendar_cita.php">Agendar Cita</a>
-  <a href="../php/logout.php">Cerrar Sesión</a>
+    <a href="panel_abogado.php">Inicio</a>
+    <a href="citas_abogado.php">Mis Citas</a>
+    <a href="agendar_cita.php">Agendar Cita</a>
+    <a href="registro_cliente.php">Registrar Cliente</a>
+
+    <?php if (isset($_SESSION['es_admin']) && (int)$_SESSION['es_admin'] === 1): ?>
+        <a href="registro_abogado.php">Registrar Abogado</a>
+    <?php endif; ?>
+
+    <a href="../PHP/logout.php">Cerrar Sesión</a>
 </div>
+
 <div class="content">
   <h1 class="title">Mis Citas</h1>
   <div class="table-box">

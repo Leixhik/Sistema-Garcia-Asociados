@@ -56,16 +56,22 @@ button:hover{
 
 <div class="header">
     <span>⚖️ García & Asociados</span>
-    <span>Sesión: <?php echo $_SESSION['usuario']; ?></span>
+    <span>Abogado: <?php echo $_SESSION['Nom_abgd']." ".$_SESSION['App_abgd']; ?></span>
 </div>
 
 <div class="sidebar">
     <a href="panel_abogado.php">Inicio</a>
     <a href="citas_abogado.php">Mis Citas</a>
+    <a href="agendar_cita.php">Agendar Cita</a>
     <a href="registro_cliente.php">Registrar Cliente</a>
-    <a href="registro_abogado.php">Registrar Abogado</a>
+
+    <?php if (isset($_SESSION['es_admin']) && (int)$_SESSION['es_admin'] === 1): ?>
+        <a href="registro_abogado.php">Registrar Abogado</a>
+    <?php endif; ?>
+
     <a href="../PHP/logout.php">Cerrar Sesión</a>
 </div>
+
 
 <div class="content">
     <div class="form-box">
