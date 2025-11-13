@@ -64,7 +64,10 @@ button:hover {
     <a href="registro_cliente.php">Registrar Cliente</a>
 
     <?php if (isset($_SESSION['es_admin']) && (int)$_SESSION['es_admin'] === 1): ?>
+        <a href="clientes_registrados.php">Clientes Registrados</a>
         <a href="registro_abogado.php">Registrar Abogado</a>
+    <a href="abogados_registrados.php">Abogados Registrados</a>
+    <a href="detalleae.php">Detalle AE</a>
     <?php endif; ?>
 
     <a href="../PHP/logout.php">Cerrar Sesión</a>
@@ -80,10 +83,25 @@ button:hover {
             <select name="cliente" required>
                 <option value="">--Selecciona--</option>
                 <?php
-                $clientes = $conexion->query("SELECT Id_cl, Nom_cl, App_cl, Apm_cl FROM cliente");
-                while($c = $clientes->fetch_assoc()){
-                    echo "<option value='".$c['Id_cl']."'>".$c['Nom_cl']." ".$c['App_cl']." ".$c['Apm_cl']."</option>";
-                }
+                $clientes = $conexion->query("
+    SELECT Id_cl, Nom_cl, App_cl, Apm_cl 
+    FROM cliente 
+    WHERE Nom_cl IS NOT NULL 
+      AND Nom_cl <> '' 
+      AND App_cl IS NOT NULL 
+      AND App_cl <> '' 
+    ORDER BY Nom_cl ASC
+");
+
+if ($clientes && $clientes->num_rows > 0) {
+    while($c = $clientes->fetch_assoc()){
+        $nombreCompleto = trim($c['Nom_cl'] . ' ' . $c['App_cl'] . ' ' . $c['Apm_cl']);
+        echo "<option value='" . $c['Id_cl'] . "'>" . htmlspecialchars($nombreCompleto) . "</option>";
+    }
+} else {
+    echo "<option value=''>⚠️ No hay clientes registrados</option>";
+}
+
                 ?>
             </select>
 

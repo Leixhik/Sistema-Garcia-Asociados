@@ -66,7 +66,10 @@ button:hover{
     <a href="registro_cliente.php">Registrar Cliente</a>
 
     <?php if (isset($_SESSION['es_admin']) && (int)$_SESSION['es_admin'] === 1): ?>
+        <a href="clientes_registrados.php">Clientes Registrados</a>
         <a href="registro_abogado.php">Registrar Abogado</a>
+    <a href="abogados_registrados.php">Abogados Registrados</a>
+    <a href="detalleae.php">Detalle AE</a>
     <?php endif; ?>
 
     <a href="../PHP/logout.php">Cerrar Sesión</a>
@@ -76,6 +79,75 @@ button:hover{
 <div class="content">
     <div class="form-box">
         <h2>Registrar Nuevo Cliente</h2>
+        <?php if (isset($_GET['msg'])): ?>
+  <?php
+    $mensaje = "";
+    $tipo = "info";
+
+    switch ($_GET['msg']) {
+      case 'cli_ok':
+        $mensaje = "✅ Cliente registrado correctamente.";
+        $tipo = "success";
+        break;
+      case 'cli_pass':
+        $mensaje = "⚠️ Las contraseñas no coinciden.";
+        $tipo = "warning";
+        break;
+      case 'cli_faltan':
+        $mensaje = "⚠️ Faltan datos obligatorios.";
+        $tipo = "warning";
+        break;
+      case 'cli_sql_prep':
+        $mensaje = "❌ Error interno preparando el registro.";
+        $tipo = "error";
+        break;
+      case 'cli_err':
+        $mensaje = "❌ Error al guardar el cliente.";
+        $tipo = "error";
+        break;
+    }
+  ?>
+  <div class="mensaje <?= $tipo ?>" id="mensaje-notificacion">
+    <?= $mensaje ?>
+  </div>
+<?php endif; ?>
+
+<style>
+.mensaje {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: white;
+  animation: fadeIn 0.5s ease, fadeOut 0.5s ease 3s forwards;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.mensaje.success { background-color: #28a745; }  
+.mensaje.warning { background-color: #ffc107; color: #212529; }
+.mensaje.error   { background-color: #dc3545; }  
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+@keyframes fadeOut {
+  from { opacity: 1; transform: translate(-50%, 0); }
+  to { opacity: 0; transform: translate(-50%, -20px); }
+}
+</style>
+
+<script>
+setTimeout(() => {
+  const msg = document.getElementById('mensaje-notificacion');
+  if (msg) msg.remove();
+}, 3500);
+</script>
+
         <form action="../PHP/guardar_cliente.php" method="POST">
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="ap_pat" placeholder="Apellido Paterno" required>

@@ -8,30 +8,46 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
 }
 
 // Capturar datos del formulario
-$nombre = $_POST['nombre'];
-$app = $_POST['ap_pat'];
-$apm = $_POST['ap_mat'];
-$rfc = $_POST['rfc'];
-$cp = $_POST['cp'];
-$direccion = $_POST['direccion'];
-$telefono = $_POST['telefono'];
-$correo = $_POST['correo'];
-$pass = $_POST['password'];
-$confirmar = $_POST['confirmar'];
+$nombre = trim($_POST['nombre'] ?? '');
+$app = trim($_POST['ap_pat'] ?? '');
+$apm = trim($_POST['ap_mat'] ?? '');
+$rfc = trim($_POST['rfc'] ?? '');
+$cp = trim($_POST['cp'] ?? '');
+$direccion = trim($_POST['direccion'] ?? '');
+$telefono = trim($_POST['telefono'] ?? '');
+$correo = trim($_POST['correo'] ?? '');
+$pass = trim($_POST['password'] ?? '');
+$confirmar = trim($_POST['confirmar'] ?? '');
 
-// Verificar que las contraseñas coincidan
-if ($pass !== $confirmar) {
-    echo "<script>alert('⚠️ Las contraseñas no coinciden'); window.location='../vistas/registro_cliente.php';</script>";
+// Validar campos vacíos
+if ($nombre==='' || $app==='' || $correo==='' || $pass==='' || $confirmar==='') {
+    header("Location: ../vistas/registro_cliente.php?msg=cli_faltan");
     exit();
 }
 
-// Insertar en la base de datos
-$sql = "INSERT INTO cliente (Nom_cl, App_cl, Apm_cl, cp_cl, Rfc_cl, tel_cl, Cor_cl, Dir_cl, Con_cli)
-        VALUES ('$nombre', '$app', '$apm', '$cp', '$rfc', '$telefono', '$correo', '$direccion', '$pass')";
-
-if($conexion->query($sql)){
-    echo "<script>alert('✅ Cliente registrado correctamente'); window.location='../vistas/panel_abogado.php';</script>";
-} else {
-    echo "<script>alert('❌ Error al guardar el cliente: ".$conexion->error."'); window.location='../vistas/registro_cliente.php';</script>";
+// Verificar que las contraseñas coincidan
+if ($pass !== $confirmar) {
+    header("Location: ../vistas/registro_cliente.php?msg=cli_pass");
+    exit();
 }
+
+// Insertar cliente (con seguridad)
+$sql = "INSERT INTO cliente (Nom_cl, App_cl, Apm_cl, cp_cl, Rfc_cl, tel_cl, Cor_cl, Dir_cl, Con_cli)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$stmt = $conexion->prepare($sql);
+
+if(!$stmt){
+    header("Location: ../vistas/registro_cliente.php?msg=cli_sql_prep");
+    exit();
+}
+
+$stmt->bind_param("sssssssss", $nombre, $app, $apm, $cp, $rfc, $telefono, $correo, $direccion, $pass);
+
+if($stmt->execute()){
+    header("Location: ../vistas/registro_cliente.php?msg=cli_ok");
+} else {
+    header("Location: ../vistas/registro_cliente.php?msg=cli_err");
+}
+$stmt->close();
+exit();
 ?>

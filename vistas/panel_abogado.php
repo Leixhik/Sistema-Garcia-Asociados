@@ -30,7 +30,10 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
     <a href="registro_cliente.php">Registrar Cliente</a>
 
     <?php if (isset($_SESSION['es_admin']) && (int)$_SESSION['es_admin'] === 1): ?>
+        <a href="clientes_registrados.php">Clientes Registrados</a>
         <a href="registro_abogado.php">Registrar Abogado</a>
+    <a href="abogados_registrados.php">Abogados Registrados</a>
+    <a href="detalleae.php">Detalle AE</a>
     <?php endif; ?>
 
     <a href="../PHP/logout.php">Cerrar Sesión</a>

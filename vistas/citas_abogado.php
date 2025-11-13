@@ -52,7 +52,10 @@ th,td{padding:10px;border-bottom:1px solid #e5e0d8;text-align:center;}
     <a href="registro_cliente.php">Registrar Cliente</a>
 
     <?php if (isset($_SESSION['es_admin']) && (int)$_SESSION['es_admin'] === 1): ?>
+        <a href="clientes_registrados.php">Clientes Registrados</a>
         <a href="registro_abogado.php">Registrar Abogado</a>
+    <a href="abogados_registrados.php">Abogados Registrados</a>
+    <a href="detalleae.php">Detalle AE</a>
     <?php endif; ?>
 
     <a href="../PHP/logout.php">Cerrar Sesión</a>
@@ -66,8 +69,9 @@ th,td{padding:10px;border-bottom:1px solid #e5e0d8;text-align:center;}
     $tipo = "info";
 
     switch ($_GET['msg']) {
+      // ✅ Eliminación
       case 'ok':
-        $mensaje = "Cita eliminada correctamente.";
+        $mensaje = "✅ Cita eliminada correctamente.";
         $tipo = "success";
         break;
       case 'notfound':
@@ -81,6 +85,32 @@ th,td{padding:10px;border-bottom:1px solid #e5e0d8;text-align:center;}
       case 'error_id':
         $mensaje = "⚠️ ID de cita no recibido.";
         $tipo = "warning";
+        break;
+
+      // ✅ Creación
+      case 'cita_ok':
+        $mensaje = "✅ Cita guardada exitosamente.";
+        $tipo = "success";
+        break;
+      case 'cita_err':
+        $mensaje = "❌ No se pudo guardar la cita.";
+        $tipo = "error";
+        break;
+      case 'cita_faltan':
+        $mensaje = "⚠️ Faltan datos: cliente, fecha u hora.";
+        $tipo = "warning";
+        break;
+      case 'cita_no_cli':
+        $mensaje = "⚠️ Cliente no encontrado.";
+        $tipo = "warning";
+        break;
+      case 'cita_sql_prep_cli':
+        $mensaje = "❌ Error interno preparando consulta de cliente.";
+        $tipo = "error";
+        break;
+      case 'cita_sql_prep_ins':
+        $mensaje = "❌ Error interno preparando guardado de la cita.";
+        $tipo = "error";
         break;
     }
   ?>
