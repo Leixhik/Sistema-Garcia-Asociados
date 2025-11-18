@@ -71,13 +71,9 @@ button:hover{ background:#00337a; }
 
 <body>
 
-<div class="header">
-    <span>⚖️ García & Asociados</span>
-    <span>Administrador: <?= $_SESSION['Nom_abgd']." ".$_SESSION['App_abgd']; ?></span>
-</div>
+<?php include "../inc/header.php"; ?>
 
 <div class="sidebar">
-    <a href="panel_abogado.php">Inicio</a>
     <a href="abogados_registrados.php">Volver</a>
 </div>
 

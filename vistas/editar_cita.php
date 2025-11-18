@@ -57,16 +57,9 @@ button:hover { background:#00337a; }
 </head>
 <body>
 
-<div class="header">
-  <span>⚖️ García & Asociados</span>
-  <span>Abogado: <?= $_SESSION['Nom_abgd'] ?></span>
-</div>
-
+<?php include "../inc/header.php"; ?>
 <div class="sidebar">
-    <a href="panel_abogado.php">Inicio</a>
-    <a href="citas_abogado.php">Mis Citas</a>
-    <a href="agendar_cita.php">Agendar Cita</a>
-    <a href="registro_cliente.php">Registrar Cliente</a>
+    <a href="citas_abogado.php">Volver</a>
 </div>
 
 <div class="content">

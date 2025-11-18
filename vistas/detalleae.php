@@ -94,20 +94,8 @@ button:hover { background: #b18f4f; }
 </head>
 <body>
 
-<div class="header">
-  <span>⚖️ García & Asociados</span>
-  <span>Administrador: <?php echo $_SESSION['Nom_abgd']." ".$_SESSION['App_abgd']; ?></span>
-</div>
-
-<div class="sidebar">
-  <a href="panel_abogado.php">Inicio</a>
-  <a href="registro_abogado.php">Registrar Abogado</a>
-  <a href="registro_cliente.php">Registrar Cliente</a>
-  <a href="clientes_registrados.php">Clientes Registrados</a>
-  <a href="abogados_registrados.php">Abogados Registrados</a>
-  <a href="detalleae.php">Detalle AE</a>
-  <a href="../php/logout.php">Cerrar Sesión</a>
-</div>
+<?php include "../inc/header.php"; ?>
+<?php include "../inc/sidebar.php"; ?>
 
 <div class="content">
   <h1 class="title">Relación Abogado–Especialidad</h1>
