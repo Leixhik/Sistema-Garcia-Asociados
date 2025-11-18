@@ -57,24 +57,25 @@ if ($esAdmin === 1) {
 <title>Casos - García & Asociados</title>
 <link rel="stylesheet" href="../css/estilo_panel.css">
 <style>
-/* Reutilizamos estilo tipo "Clientes Registrados" para que todo se vea uniforme */
-
 *{
   box-sizing:border-box;
   font-family:'Montserrat',sans-serif;
 }
 
-.content{
-  margin-left:220px;
-  padding:20px;
+/* ======== LAYOUT ======== */
+.content {
+    margin-left: 240px;   /* espacio perfecto para sidebar */
+    margin-top: 90px;     /* espacio para el header */
+    padding: 25px;
 }
 
+/* ======== TABLA ======== */
 .table-box{
   background:#fff;
   padding:20px;
   border:1px solid #dcd6c8;
   border-radius:8px;
-  max-width:1000px;
+  max-width:1100px;
   margin:auto;
   overflow-x:auto;
 }
@@ -82,10 +83,10 @@ if ($esAdmin === 1) {
 table{
   width:100%;
   border-collapse:collapse;
-  min-width:850px;
+  min-width:950px;
 }
 
-th,td{
+th, td {
   padding:12px;
   border-bottom:1px solid #e5e0d8;
   text-align:center;
@@ -97,82 +98,66 @@ th{
   font-weight:bold;
 }
 
-.acciones{
-  display:flex;
-  gap:8px;
-  justify-content:center;
+/* ======== BOTONES ACCIONES ======== */
+td .acciones{
+    display:flex;
+    justify-content:center;
+    gap:10px;
 }
 
-.btn-editar{
-  background:#004aad;
-  color:#fff;
-  padding:7px 12px;
-  border-radius:5px;
-  font-size:13px;
-  text-decoration:none;
-  transition:.2s ease;
-}
-
-.btn-editar:hover{
-  background:#00337a;
-}
-
+.btn-editar,
 .btn-detalle{
-  background:#6c757d;
-  color:#fff;
-  padding:7px 12px;
-  border-radius:5px;
-  font-size:13px;
-  text-decoration:none;
-  transition:.2s ease;
+    display:inline-block;
+    padding:7px 12px;
+    border-radius:5px;
+    color:white;
+    font-size:13px;
+    text-decoration:none;
+    white-space:nowrap;
 }
 
-.btn-detalle:hover{
-  background:#565e64;
-}
+/* Colores */
+.btn-editar{ background:#004aad; }
+.btn-editar:hover{ background:#00337a; }
 
+.btn-detalle{ background:#6c757d; }
+.btn-detalle:hover{ background:#565e64; }
+
+/* ======== BADGES ======== */
 .badge-estado{
   padding:4px 8px;
   border-radius:12px;
   font-size:12px;
+  font-weight:bold;
 }
 
-.badge-abierto{background:#d4edda;color:#155724;}
-.badge-cerrado{background:#f8d7da;color:#721c24;}
-.badge-proceso{background:#fff3cd;color:#856404;}
+.badge-abierto{ background:#d4edda; color:#155724; }
+.badge-cerrado{ background:#f8d7da; color:#721c24; }
+.badge-proceso{ background:#fff3cd; color:#856404; }
 
-@media(max-width:768px){
-  .content{margin-left:0;padding:10px;}
-  .sidebar{position:relative;width:100%;}
+/* ======== RESPONSIVE ======== */
+@media(max-width:900px){
+  .content{ margin-left:0; margin-top:140px; }
+  table{ min-width:700px; }
+}
+
+@media(max-width:600px){
+  .content{ margin-top:160px; }
+  td .acciones{ flex-direction:column; }
 }
 </style>
+
 </head>
 <body>
 
-<div class="header">
-    <span>⚖️ García &amp; Asociados</span>
-    <span>Abogado: <?php echo htmlspecialchars($_SESSION['Nom_abgd'].' '.$_SESSION['App_abgd']); ?></span>
-</div>
-
-<div class="sidebar">
-    <a href="panel_abogado.php">Inicio</a>
-    <a href="citas_abogado.php">Mis Citas</a>
-    <a href="agendar_cita.php">Agendar Cita</a>
-    <a href="registro_cliente.php">Registrar Cliente</a>
-    <a href="casos_abogado.php">Casos</a>
-
-    <?php if ($esAdmin === 1): ?>
-        <a href="clientes_registrados.php">Clientes Registrados</a>
-        <a href="registro_abogado.php">Registrar Abogado</a>
-        <a href="abogados_registrados.php">Abogados Registrados</a>
-        <a href="detalleae.php">Detalle AE</a>
-    <?php endif; ?>
-
-    <a href="../php/logout.php">Cerrar Sesión</a>
-</div>
+<?php include "../inc/header.php"; ?>
+<?php include "../inc/sidebar.php"; ?>
 
 <div class="content">
-  <h1 class="title">Casos <?php echo $esAdmin ? "(todos)" : "asignados a mí"; ?></h1>
+  <h1 class="title" style="margin-bottom:20px;">
+  Casos <?php echo $esAdmin ? "(todos)" : "asignados a mí"; ?>
+</h1>
+
 
   <?php if (isset($_GET['msg'])): ?>
     <?php
@@ -228,6 +213,16 @@ th{
       if (msg) msg.remove();
     }, 3500);
   </script>
+  
+
+  <!-- 🔹 Botón para ir a registrar un nuevo caso -->
+  <div style="margin-top: 10px; margin-bottom:15px;">
+    <a href="registrar_caso.php" 
+       style="background:#004aad;color:white;padding:8px 14px;border-radius:5px;
+              text-decoration:none;font-size:14px;">
+      ➕ Registrar nuevo caso
+    </a>
+  </div>
 
   <div class="table-box">
     <table>
@@ -262,7 +257,7 @@ th{
             <td><?= htmlspecialchars($cs['Fecha_act'] ?? '-'); ?></td>
             <td>
               <div class="acciones">
-                <!-- Más adelante creamos estas vistas -->
+          
                 <a href="editar_caso.php?id=<?= $cs['Id_cs']; ?>" class="btn-editar">Editar</a>
                 <a href="ver_caso.php?id=<?= $cs['Id_cs']; ?>" class="btn-detalle">Detalle</a>
               </div>

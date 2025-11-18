@@ -9,6 +9,7 @@ $esAdmin = $_SESSION['es_admin'] ?? 0;
     <a href="../vistas/citas_abogado.php">Mis Citas</a>
     <a href="../vistas/agendar_cita.php">Agendar Cita</a>
     <a href="../vistas/registro_cliente.php">Registrar Cliente</a>
+    <a href="casos_abogado.php">Casos</a>
 
     <?php if ($esAdmin == 1): ?>
         <a href="../vistas/clientes_registrados.php">Clientes Registrados</a>
